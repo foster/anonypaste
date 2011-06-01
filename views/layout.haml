@@ -1,0 +1,22 @@
+﻿!!! XML
+!!!
+%html
+	%head
+		%title= @title
+		-# %link{'href'=>'/css/reset.css', 'rel'=>'stylesheet', 'type'=>'text/css'}
+		%link{'href'=>'/css/tickle.scss', 'rel'=>'stylesheet', 'type'=>'text/css'}
+		%script{'src'=>'/js/jquery-1.4.4.min.js', 'type'=>'text/javascript'}
+		%script{'src'=>'/js/jquery-ui.min.js', 'type'=>'text/javascript'}
+		%script{'src'=>'/js/anonypaste.js', 'type'=>'text/javascript'}
+
+	%body
+		.page
+			#header
+				#header_right_container
+					%img#ad{'alt'=>'a message from our sponsors', 'src'=>'http://static.adzerk.net/Advertisers/3570.gif'}
+					%a#helpIcon.icon{'href'=>'#'} ?
+				#logo
+					%a#homeLink{'href'=>'/'} Anonypaste
+					%span#dumbSlogan Get Pasted.
+		
+			#main= yield

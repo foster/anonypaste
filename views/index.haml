@@ -1,0 +1,17 @@
+﻿#about.notify
+	%a.notifyClose{:href=>"#"} x
+	.notifyContents	
+		%p Anonypaste helps you share text with other people. It preserves tabs and spaces, which is really useful to programmers.
+		%p |
+		  Unlike other paste sites, Anonypaste automatically deletes everything after 24 hours. |
+		  That means if you're sharing pieces of your company's source code with another programmer, |
+		  your source code won't still be floating around on the internet 6 months from now. |
+
+		%p Still confused? Check out some "examples".
+
+%form{:method=>'post'}
+	#pasteBodyContainer
+		<textarea id="pasteBody" name="pasteBody" rows="14" cols="50"></textarea>
+	%p#pasteFooter
+		%input#pasteButton{:type=>"submit", :value=>"Paste"}
+		%span#autoDeleteNotice Your paste will be automatically deleted in 24 hours.
