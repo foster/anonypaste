@@ -29,7 +29,7 @@ post '/' do
 	key = SecureRandom.hex(3)
 	redis.pipelined do
 		redis.set key, params[:pasteBody]
-		redis.expire key, 60#*60*24
+		redis.expire key, 60*60*24
 	end
 	redirect "/#{key}"
 end
