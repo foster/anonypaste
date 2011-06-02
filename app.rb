@@ -1,11 +1,19 @@
+require 'rubygems'
 require 'sinatra'
 require 'securerandom'
 require 'haml'
 require './lib/sinatra/redis/redis.rb'
 
 enable :static
-set :redis, 'redis://localhost:6379/0'
 
+configure :development do 
+	set :redis, 'redis://localhost:6379/0'
+end
+
+configure :production do
+	set :redis, 'redis://redistogo:4982d20bd9f828092dc60952e45247d4@bluegill.redistogo.com:9107/0'
+end
+	
 @title = 'Anonypaste: Get pasted.'
 	
 get '/' do
