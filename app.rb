@@ -1,4 +1,3 @@
-require 'rubygems'
 require 'sinatra'
 require 'securerandom'
 require 'haml'
