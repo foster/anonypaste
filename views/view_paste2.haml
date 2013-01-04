@@ -1,0 +1,26 @@
+﻿-# http://balupton.github.com/jquery-syntaxhighlighter/demo/
+-# supported languages:
+	"bsh", "c", "cc", "cpp", "cs", "csh", "cyc", "cv", "htm", "html",
+	"java", "js", "m", "mxml", "perl", "pl", "pm", "py", "rb", "sh",
+	"xhtml", "xml", "xsl".
+
+%ul{:class=>'nav nav-tabs', :id=>'lang-selector'}
+	%li{:class=>@lang=='none'?'active':''}
+		%a{:href=>"#{@paste_id};none"} none
+	%li{:class=>(!@lang)?'active':''}
+		%a{:href=>@paste_id} auto
+	%li{:class=>@lang=='html'?'active':''}
+		%a{:href=>"#{@paste_id};html"} html
+	%li{:class=>@lang=='xml'?'active':''}
+		%a{:href=>"#{@paste_id};xml"} xml
+	%li{:class=>@lang=='csharp'?'active':''}
+		%a{:href=>"#{@paste_id};csharp"} csharp
+	%li{:class=>@lang=='php'?'active':''}
+		%a{:href=>"#{@paste_id};php"} php
+	%li{:class=>@lang=='js'?'active':''}
+		%a{:href=>"#{@paste_id};js"} js
+
+%link{:href=>'/pygments.css', :rel=>'stylesheet'}
+
+#pasteBody
+	!= @paste_formatted
