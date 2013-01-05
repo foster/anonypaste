@@ -1,7 +1,6 @@
 require 'sinatra'
 require 'securerandom'
 require 'haml'
-require 'rbconfig'
 require 'pygmentize'
 require './lib/sinatra/redis/redis.rb'
 
@@ -18,62 +17,25 @@ end
 
 configure do
   mime_type :less, 'text/css'
-
-  # fix up the Pygmentize executable path for use on windows
-  class << Pygmentize
-    alias_method :old_bin, :bin
-  end
-  
-  class Pygmentize
-    def self.bin
-      if (RbConfig::CONFIG['host_os'] =~ /mswin|mingw|cygwin/)
-        old_bin.sub(/\/usr\/bin\/env /, "")
-      else
-        old_bin
-      end
-    end
-    
-    def self.css
-      args = [
-        "-S", "default",
-        "-f", "html"
-      ]
-      IO.popen("#{bin} #{Shellwords.shelljoin args}", "r") do |io|
-        io.read
-      end
-    end
-#    def self.process(source, lexer, args = [])
-#      args += [
-#        "-l", lexer.to_s,
-#        "-f", "html",
-#        "-O", "encoding=#{source.encoding}"
-#      ]
-#    
-#      IO.popen("#{bin} #{Shellwords.shelljoin args}", "r+") do |io|
-#        io.write(source)
-#        io.close_write
-#        io.read
-#      end
-#    end
-  end
 end
 
 @title = 'Anonypaste: Get pasted.'
+@@available_langs = {
+  :csharp     => 'C#',
+  :javascript => 'Javascript',
+  :ruby       => 'Ruby',
+  :python     => 'Python',
+  :php        => 'PHP'
+}
 
 get '/' do
   haml :index
 end
 
-get '/:paste_id;:lang' do |paste_id,lang|
-  @paste_id = paste_id
-  @lang = lang
-  @ttl = redis.ttl @paste_id
-  @paste = redis.get @paste_id
+get '/guess/:paste_id' do |paste_id|
+  paste = redis.get paste_id
   
-  @paste_formatted = Pygmentize.process(@paste, @lang.to_sym)
-  
-  # haml "%p This paste will expire in \#{@ttl} seconds.\n%pre= @paste"
-  haml :view_paste2
+  Pygmentize.guess paste
 end
 
 get '/pygments.css' do
@@ -81,10 +43,14 @@ get '/pygments.css' do
   Pygmentize.css
 end
 
-get '/:paste_id' do |paste_id|
+get %r{/([0-9a-f]{6});?(.*)} do |paste_id, lang|
+  @paste_id = paste_id
+  @lang = lang.empty? ? redis.get("#{paste_id}:lang") : lang
   @ttl = redis.ttl paste_id
   @paste = redis.get paste_id
-  @paste_id = paste_id
+
+  @paste_formatted = Pygmentize.process(@paste, @lang.to_sym)
+  
   haml :view_paste
 end
 
@@ -92,7 +58,9 @@ post '/' do
   key = SecureRandom.hex(3)
   redis.pipelined do
     redis.set key, params[:pasteBody]
+    redis.set "#{key}:lang", params[:language]
     redis.expire key, 60*60*24
+    redis.expire "#{key}:lang", 60*60*24
   end
   redirect "/#{key}"
 end
