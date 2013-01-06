@@ -18,5 +18,8 @@
 	#pasteBodyContainer
 		<textarea id="pasteBody" name="pasteBody" rows="14" cols="50"></textarea>
 	%div#pasteFooter
+		%select{:name => "language"}
+			- @@available_langs.each_pair do |key, value|
+				%option{:value => key}= value
 		%input#pasteButton{:type=>"submit", :value=>"Paste"}
 		%span#autoDeleteNotice Your paste will be automatically deleted in 24 hours.
