@@ -1,6 +1,7 @@
 require 'sinatra'
 require 'securerandom'
 require 'haml'
+require 'sass'
 require 'pygmentize'
 require './lib/sinatra/redis/redis.rb'
 
@@ -20,13 +21,15 @@ configure do
 end
 
 @title = 'Anonypaste: Get pasted.'
-@@available_langs = {
+AVAILABLE_LANGUAGES = {
+  :text       => 'Text',
   :csharp     => 'C#',
   :javascript => 'Javascript',
   :ruby       => 'Ruby',
   :python     => 'Python',
   :php        => 'PHP'
 }
+
 
 get '/' do
   haml :index
@@ -36,6 +39,10 @@ get '/guess/:paste_id' do |paste_id|
   paste = redis.get paste_id
   
   Pygmentize.guess paste
+end
+
+get '/site.css' do
+  scss :site
 end
 
 get '/pygments.css' do
