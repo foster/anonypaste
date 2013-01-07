@@ -50,15 +50,21 @@ get '/pygments.css' do
   Pygmentize.css
 end
 
-get %r{/([0-9a-f]{6});?(.*)} do |paste_id, lang|
+# get /:pasteid;:lang
+get %r{^/([0-9a-f]{6});?(.*)} do |paste_id, lang|
   @paste_id = paste_id
   @lang = lang.empty? ? redis.get("#{paste_id}:lang") : lang
   @ttl = redis.ttl paste_id
   @paste = redis.get paste_id
 
-  @paste_formatted = Pygmentize.process(@paste, @lang.to_sym)
+  @paste_formatted = Pygmentize.process @paste, @lang.to_sym, ["-O", "style=colorful,linenos=1"]
   
   haml :view_paste
+end
+
+get '/raw/:paste_id' do |paste_id|
+  content_type 'text/plain'
+  redis.get paste_id
 end
 
 post '/' do
