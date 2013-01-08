@@ -21,15 +21,17 @@ header[role="banner"] {
     font-size: 60%;
     margin: -20px 0 0 10px;
   }
-  #homeLink {
+  a#homeLink {
     line-height: 70px;
-  }
-  a {
     text-decoration: none;
     color: #555;
   }
-  a:hover {
+  a#homeLink:hover {
     text-decoration: underline;
+  }
+  #forkMe {
+    float: right;
+    margin-top: 98px/2 - 30px/2;
   }
 }
 

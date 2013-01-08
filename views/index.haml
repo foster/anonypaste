@@ -2,7 +2,7 @@
   %form#pasteForm{:method=>'post'}
     #toolbar.btn-toolbar
       .btn-group.cta
-        %button.btn.btn-success
+        %button.btn.btn-info
           %i.icon-paste
           Paste it!
       #languagePicker.btn-group
@@ -49,4 +49,7 @@
           $(".cta button").prop('disabled', true)
         }
       })
+
+      // trigger 'change' on pasteBody to decide whether to enable or disable button.
+      $("#pasteBody").trigger('change')
   })
