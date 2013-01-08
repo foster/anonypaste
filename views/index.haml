@@ -1,25 +1,55 @@
-﻿%script
-	:plain
-		var $window = $(window);
-		function resizeTextarea() {
-			var $textarea = $('#pasteBody');
-			$textarea.height( $window.height() - 160 );
-			$textarea.width( $window.width() - 15 );
-		};
+﻿.container
+  %form#pasteForm{:method=>'post'}
+    #toolbar.btn-toolbar
+      .btn-group.cta
+        %button.btn.btn-info
+          %i.icon-paste
+          Paste it!
+      #languagePicker.btn-group
+        %input{:type=>'hidden', :name=>"language", :value=>AVAILABLE_LANGUAGES.first[0]}
+        %button.btn.dropdown-toggle
+          -# %i.icon-th-list
+          Language:
+          %span.label= AVAILABLE_LANGUAGES.first[1]
+          %span.caret
+        %ul.dropdown-menu
+          - AVAILABLE_LANGUAGES.each_pair do |key, value|
+            %li.language-option{:data=>{:value=> key}}= value
+    <textarea id="pasteBody" name="pasteBody" rows="14" cols="50"></textarea>
+  %span#autoDeleteNotice Your paste will be automatically deleted in 24 hours.
 
-		$(function() {
-			resizeTextarea();
-			// create the resize handler, but throttle it
-			$window.resize( $.throttle( 250, resizeTextarea ) );
-			$("#pasteBody").focus();
-		});
+%script{:src=>"js/jquery-1.8.3.min.js"}
+%script{:src=>"js/bootstrap-custom.min.js"}
+:javascript
+  $(document).ready(function() {
+    var $languagePicker = $("#languagePicker")
+      , $languageInput = $("input[name=language]")
+      , $languageLabel = $(".label")
+    $(".dropdown-toggle", $languagePicker).dropdown()
 
-%form{:method=>'post'}
-	#pasteBodyContainer
-		<textarea id="pasteBody" name="pasteBody" rows="14" cols="50"></textarea>
-	%div#pasteFooter
-		%select{:name => "language"}
-			- @@available_langs.each_pair do |key, value|
-				%option{:value => key}= value
-		%input#pasteButton{:type=>"submit", :value=>"Paste"}
-		%span#autoDeleteNotice Your paste will be automatically deleted in 24 hours.
+    $(".language-option", $languagePicker).on('click', function() {
+      var $this  = $(this)
+
+      $languageInput.val($this.data('value'))
+      $languageLabel.text($this.text())
+    })
+
+    $("#pasteBody")
+      .on('focusin', function() { 
+        $("#pasteForm").addClass("is-focused") 
+      })
+      .on('focusout', function() {
+        $("#pasteForm").removeClass("is-focused") 
+      })
+      .on('keyup change', function() {
+        if ($(this).val().length > 0) {
+          $(".cta button").prop('disabled', false)
+        }
+        else {
+          $(".cta button").prop('disabled', true)
+        }
+      })
+
+      // trigger 'change' on pasteBody to decide whether to enable or disable button.
+      $("#pasteBody").trigger('change')
+  })
