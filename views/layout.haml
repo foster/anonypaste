@@ -1,16 +1,16 @@
 ﻿!!! 5
 %html
-	%head
-		%title= @title
-		%link{:href=>'/css/bootstrap-custom.min.css', :rel=>'stylesheet'}
-		%link{:href=>'/css/fontawesome-custom.css', :rel=>'stylesheet'}
-		%link{:href=>'/site.css', :rel=>'stylesheet', :type=>'text/css'}
-		%link{:rel=>'icon', :type=>'image/x-icon', :href=>'data:image/x-icon;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQEAYAAABPYyMiAAAABmJLR0T///////8JWPfcAAAACXBIWXMAAABIAAAASABGyWs+AAAAF0lEQVRIx2NgGAWjYBSMglEwCkbBSAcACBAAAeaR9cIAAAAASUVORK5CYII='}
+  %head
+    %title= @title
+    %link{:href=>'/css/bootstrap-custom.min.css', :rel=>'stylesheet'}
+    %link{:href=>'/css/fontawesome-custom.css', :rel=>'stylesheet'}
+    %link{:href=>'/site.css', :rel=>'stylesheet', :type=>'text/css'}
+    %link{:rel=>'icon', :type=>'image/x-icon', :href=>'data:image/x-icon;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQEAYAAABPYyMiAAAABmJLR0T///////8JWPfcAAAACXBIWXMAAABIAAAASABGyWs+AAAAF0lEQVRIx2NgGAWjYBSMglEwCkbBSAcACBAAAeaR9cIAAAAASUVORK5CYII='}
 
-	%body
-		%header{:role=>'banner'}
-			.container
-				%img#logo{:src=>"images/glue.jpg"}
-				%a#homeLink{'href'=>'/'} Anonypaste
-				%span#dumbSlogan Get Pasted.
-		.content= yield
+  %body
+    %header{:role=>'banner'}
+      .container
+        %img#logo{:src=>"images/glue.jpg"}
+        %a#homeLink{'href'=>'/'} Anonypaste
+        %span#dumbSlogan Get Pasted.
+    .content= yield

@@ -27,7 +27,8 @@ AVAILABLE_LANGUAGES = {
   :javascript => 'Javascript',
   :ruby       => 'Ruby',
   :python     => 'Python',
-  :php        => 'PHP'
+  :php        => 'PHP',
+  :sql        => 'SQL'
 }
 
 
